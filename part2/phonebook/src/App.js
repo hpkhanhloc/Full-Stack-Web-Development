@@ -55,7 +55,7 @@ const App = () => {
       <Filter filterName={filterName} setNameFilter={setNameFilter}/>
       <h2>Add a new</h2>
       <PersonForm persons={persons} setPersons={setPersons} newName={newName} setNewName={setNewName} 
-      newNumber={newNumber} setNewNumber={setNewNumber} setSuccessMessage={setSuccessMessage} successMessage={successMessage}/>
+      newNumber={newNumber} setNewNumber={setNewNumber} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} />
       <h2>Numbers</h2>
       {rows()}
     </div>
@@ -70,7 +70,7 @@ const Filter = ({filterName, setNameFilter}) => {
   )  
 }
 
-const PersonForm = ({newName, setNewName, newNumber, setNewNumber, setPersons, persons, setSuccessMessage}) => {
+const PersonForm = ({newName, setNewName, newNumber, setNewNumber, setPersons, persons, setSuccessMessage, setErrorMessage}) => {
 
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
@@ -96,6 +96,12 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, setPersons, p
               setSuccessMessage(null)
             }, 5000)
           })
+          .catch(error => {
+            setErrorMessage(`${error.response.data}`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+          })
       }
     } else {
       personService
@@ -108,6 +114,12 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, setPersons, p
         setTimeout(() =>{
           setSuccessMessage(null)
         },5000)
+      })
+      .catch(error => {
+        setErrorMessage(`${error.response.data.error}`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
 
     }
