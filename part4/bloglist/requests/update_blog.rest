@@ -1,0 +1,9 @@
+PUT  http://localhost:3003/api/blogs/5e007b7f43da856184c7a0a1
+Content-Type: application/json
+
+{
+    "title": "VN FIN",
+    "author": "LocHoang",
+    "url": "http://countries.123",
+    "likes": 12
+}
