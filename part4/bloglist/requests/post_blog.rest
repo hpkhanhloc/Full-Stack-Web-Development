@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJ5dXV2biIsImlkIjoiNWUwMGRjOGY5ZDQ0ZDE0N2MwYTE2MGQ5IiwiaWF0IjoxNTc3MTI5Nzc3fQ.nJm6Uh4__GIDzJGNI1q_adViEpy0TISk6ElxkBBXAY0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJ5dXV2biIsImlkIjoiNWUwMGRjOGY5ZDQ0ZDE0N2MwYTE2MGQ5IiwiaWF0IjoxNTc3MjU0Nzk1fQ.6tS4ic7HCbSfaqSPTxcFV4q9cKuntx5iHuQxvTOe82c
 
 {
     "title": "Flower Blog",

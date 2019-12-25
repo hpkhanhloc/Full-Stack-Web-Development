@@ -8,12 +8,16 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
-const tokenExtractor = (request, response, next) => {
+const getTokenFrom = request => {
   const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
-    request.token = authorization.substring(7)
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
   }
-  request.token =  null 
+  return null
+}
+
+const tokenExtractor = (request, response, next) => {
+  request.token = getTokenFrom(request)
   next()
 }
 
