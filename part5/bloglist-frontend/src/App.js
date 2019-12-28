@@ -10,8 +10,8 @@ import { useField } from './hooks'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const username = useField('text')
-  const password = useField('password')
+  const [username] = useField('text')
+  const [password] = useField('password')
   const [newtitle, setTitle] = useState('')
   const [newauthor, setAuthor] = useState('')
   const [newurl, setURL] = useState('')
@@ -36,19 +36,15 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    console.log(username.value)
-    console.log(username.type)
     try {
-      const user = await loginService.login(
-        username.value , password.value
-      )
+      const user = await loginService.login({
+        username: username.value , password: password.value
+      })
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
       setUser(user)
-      username.reset()
-      password.reset()
       setSuccessMessage(`${user.name} log in successful`)
       setTimeout(() => {
         setSuccessMessage(null)
@@ -149,15 +145,11 @@ const App = () => {
         <form onSubmit={handleLogin}>
           <div>
         username<input
-              type={username.type}
-              value={username.value}
-              onChange={username.onChange}
+              {...username}
             />
           </div>
           <div>
-        password<input type={password.type}
-              value={password.value}
-              onChange = {password.onChange}
+        password<input {...password}
             />
           </div>
           <button type='submit'>login</button>
