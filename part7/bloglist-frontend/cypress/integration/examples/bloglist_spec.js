@@ -1,0 +1,27 @@
+describe('Bloglist app', function() {
+    it('login form can be opened', function() {
+        cy.visit('http://localhost:3000')
+        cy.contains('Log in to application')
+        cy.get('input:first')
+            .type('ryuuvn')
+        cy.get('input:last')
+            .type('fullstack')
+        cy.contains('Login in')
+            .click()
+         cy.contains('Loc Hoang logged in')
+        })
+
+    it('a new note can be created', function() {
+        cy.contains('new note')
+            .click()
+        cy.get('input:first')
+            .type('a note created by cypress')
+        cy.get('input:second')
+            .type('Cypress')
+        cy.get('input:third')
+            .type('Cypress')
+        cy.contains('Create')
+            .click()
+        cy.contains('a note created by cypress')
+        })
+  })

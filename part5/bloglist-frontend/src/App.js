@@ -45,10 +45,6 @@ const App = () => {
 
       blogService.setToken(user.token)
       setUser(user)
-      setSuccessMessage(`${user.name} log in successful`)
-      setTimeout(() => {
-        setSuccessMessage(null)
-      },5000)
     } catch (error) {
       setErrorMessage('wrong user name or password')
       setTimeout(() => {
