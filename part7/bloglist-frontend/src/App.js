@@ -4,12 +4,12 @@ import Blogs from "./components/Blogs";
 import Users from "./components/Users"
 import Notification from "./components/Notification";
 
-import { logout } from "./reducers/user"
+import { logout, login } from "./reducers/user"
 import { initializeBlogs } from "./reducers/blogs"
 import { initializeUsers } from "./reducers/users"
 import { 
   BrowserRouter as Router,
-  Route, Link } from "react-router-dom";
+  Route, Link, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Togglable from "./components/Togglable";
 import NewBlog from "./components/NewBlog";
@@ -17,6 +17,8 @@ import { createBlog } from "./reducers/blogs";
 import Blog from "./components/Blog";
 import User from './components/User'
 import { Navbar, Button, Nav } from "react-bootstrap";
+import storage from "./utils/storage";
+import { setNotification } from "./reducers/notification";
 
 const App = () => {
   const user = useSelector(state => state.user)
@@ -27,10 +29,19 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
+    const user = storage.loadUser()
+    if (user) { dispatch(login(user))}
   }, [dispatch]);
 
-  // const handleCreateBlog = useCallback(
-  //   () => dispatch(createBlog()), [dispatch])
+  const handleCreateBlog = async (blog) => {
+    dispatch(createBlog(blog))
+    dispatch(setNotification(`A new blog: ${blog.title} by ${blog.author} added`))
+  }
+  
+  const handleLogout = () => {
+    dispatch(logout())
+    storage.logoutUser()
+  }
 
   if (user === null) {
     return (
@@ -56,20 +67,29 @@ const App = () => {
               <Nav.Link href="#" as="span">
                 {user.name} logged in  
               </Nav.Link>
-              <Button variant="primary" onClick={() => dispatch(logout())}>Logout</Button>
+              <Button variant="primary" onClick={handleLogout}>Logout</Button>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
         <Notification />
-        <Togglable buttonLabel="create new" ref={newBlogRef}>
-          <NewBlog createBlog={(newblog) => dispatch(createBlog(newblog))} />
-        </Togglable>
-        <div>
-          <Route exact path="/" render={() => <Blogs />} />
-          <Route exact path="/users" render={() => <Users />} />
-          <Route exact path="/blogs/:id" render={() => <Blog />} />
-          <Route exact path="/users/:id" render={() => <User />} />
-        </div>
+        
+        <Switch>
+          <Route exact path="/">
+            <Togglable buttonLabel="create new" ref={newBlogRef}>
+              <NewBlog createBlog={handleCreateBlog} />
+            </Togglable>
+            <Blogs />
+          </Route>
+          <Route exact path="/users">
+            <Users />
+          </Route> />
+          <Route exact path="/blogs/:id">
+            <Blog />
+          </Route> 
+          <Route exact path="/users/:id">
+            <User />
+          </Route>
+        </Switch>
       </Router>
     </div>
   );

@@ -13,13 +13,13 @@ const User = () => {
     }
 
     return (
-        <div class='container'>
+        <div className='container'>
             <h3>{user.name}</h3>
 
             <b>Added blogs</b>
-            <ul class="list-group">
+            <ul className="list-group">
                 {user.blogs.map(b =>
-                    <li class="list-group-item" key={b.id}>
+                    <li className="list-group-item" key={b.id}>
                         <Link to={`/blogs/${b.id}`}>
                             {b.title}
                         </Link>

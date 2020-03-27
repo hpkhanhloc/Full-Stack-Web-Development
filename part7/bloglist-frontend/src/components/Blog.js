@@ -14,19 +14,19 @@ const Comments = ({ comments, handleComment }) => {
     }
 
     return (
-        <div class="container">
+        <div className="container">
             <h3>Comments</h3>
-            <form class="form-inline" onSubmit={addComment}>
+            <form className="form-inline" onSubmit={addComment}>
                     <input
-                        class="form-control"
+                        className="form-control"
                         name="comment" 
                     />
-                <button class="btn btn-primary btn-sm" type="submit">Add comment</button>
+                <button className="btn btn-primary btn-sm" type="submit">Add comment</button>
             </form>
             <div>
-                <ul class="list-group">
+                <ul className="list-group">
                     {comments.map((c, i) =>
-                        <li class="list-group-item" key={i}>{c}</li>
+                        <li className="list-group-item" key={i}>{c}</li>
                     )}
                 </ul>
             </div>
@@ -65,13 +65,13 @@ const Blog = () => {
     }
 
     return (
-        <div class='container'>
+        <div className='container'>
             <h3>{blog.title} by {blog.author}</h3>
             <div>
                 <div><a href={blog.url}>{blog.url}</a></div>
                 <div>likes {blog.likes}
-                    <button class="btn btn-primary btn-sm" onClick={handleLike}>Like!</button>
-                    {own && <button class="btn btn-danger btn-sm" onClick={handleRemove}>Remove</button>}
+                    <button className="btn btn-primary btn-sm" onClick={handleLike}>Like!</button>
+                    {own && <button className="btn btn-danger btn-sm" onClick={handleRemove}>Remove</button>}
                 </div>
                 <div>Added by {blog.user.username}</div>
             </div>

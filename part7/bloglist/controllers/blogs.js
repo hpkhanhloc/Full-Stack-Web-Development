@@ -13,17 +13,10 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
 
   try {
     const blog = await Blog.findById(request.params.id)
+    blog.comments = blog.comments.concat(body.comment)
 
-    const newblog = {
-      title: blog.title,
-      author: blog.author,
-      comments: blog.comments.concat(body.comment),
-      url: blog.url,
-      likes: blog.likes,
-    }
-
-    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, newblog, { new: true })
-    response.status(201).json(updatedBlog)
+    await blog.save()
+    response.json(blog)
   } catch (exception) {
     next(exception)
   }
@@ -31,7 +24,7 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
 
 
 blogsRouter.post('/', async (request, response, next) => {
-    const body = request.body
+    const blog = new Blog(request.body)
 
     try {
       const decodeToken = jwt.verify(request.token, process.env.SECRET)
@@ -40,16 +33,13 @@ blogsRouter.post('/', async (request, response, next) => {
       }
 
       const user = await User.findById(decodeToken.id)
+
+      if(!blog.likes) {
+        blog.likes = 0
+
+      }
   
-      const blog = new Blog({
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        comments: body.comments,
-        likes: body.likes,
-        user: user.id
-      })
-  
+      blog.user = user
       const savedBlog = await blog.save()
       user.blogs = user.blogs.concat(savedBlog._id)
       await user.save()
@@ -81,22 +71,12 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 })
 
 blogsRouter.put('/:id', async (request, response, next) =>{
-  const body = request.body
+  const blog = request.body
+  blog.user = blog.user.id
 
   try {
-    const blog = await Blog.findById(request.params.id).populate('user', { username: 1, name: 1 })
-
-    const newblog = {
-      title: body.title,
-      author: body.author,
-      comments: body.comments,
-      url: body.url,
-      likes: body.likes,
-      user: blog.user
-    }
-
-    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, newblog, { new: true})
-    response.json(updatedBlog.toJSON())
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true}).populate('user')
+    response.json(updatedBlog)
   } catch (exception) {
     next(exception)
   }
