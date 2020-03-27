@@ -1,46 +1,38 @@
 import React from 'react'
-import Blog from './Blog'
-import { connect } from 'react-redux'
-import { likeBlog, removeBlog } from '../reducers/blogReducer'
-import { setNotification } from '../reducers/notiReducer'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Table } from 'react-bootstrap'
+// import Togglable from "./Togglable";
+// import NewBlog from "./NewBlog";
+// import { createBlog } from "../reducers/blogs"
 
-const Blogs = (props) => {
+const Blogs = () => {
+    //const dispatch = useDispatch
+    //const newBlogRef = React.createRef();
+    const blogs = useSelector(state => state.blogs)
+        .sort((b1, b2) => b2.likes - b1.likes)
 
-    const likeBlog = (blog) => {
-        props.likeBlog(blog)
-        props.setNotification(`You has liked ${blog.title}`, 5000)
-    }
-
-    const removeBlog = (blog) => {
-        const ok = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
-        if (ok) { 
-            props.removeBlog(blog)
-            props.setNotification(`Blog ${blog.title} by ${blog.author} removed`, 5000)
-        }
-    }
-    return(
-        props.blogs.map(blog => 
-            <Blog 
-            key={blog.id}
-            blog={blog}
-            like={likeBlog}
-            remove={removeBlog}
-            user={blog.user}
-            creator={blog.user.username === props.user.username}
-            />)
-    )
+    return (
+      <div>
+        <h2>Blogs</h2>
+        <Table striped>
+          <tbody>
+            {blogs.map(blog => 
+              <tr key={blog.id}>
+                <td>
+                  <Link to={`/blogs/${blog.id}`}>
+                    {blog.title}
+                  </Link>
+                </td>
+                <td>
+                  {blog.user.name}
+                </td>
+                </tr>
+            )} 
+          </tbody>
+        </Table>
+      </div>
+    );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        blogs: state.blogs,
-        user: state.user,
-        notification: state.notification
-    }
-}
-
-const mapDispatchToProps = {
-    likeBlog, removeBlog, setNotification
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Blogs)
+export default Blogs

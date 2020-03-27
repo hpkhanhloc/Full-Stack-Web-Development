@@ -1,48 +1,52 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { setNotification } from '../reducers/notiReducer'
-import { createBlog } from '../reducers/blogReducer'
-import { useField } from '../hooks'
+import React, { useState } from 'react'
+import { Form, Button } from 'react-bootstrap'
 
-const NewBlog = (props) => {
-  const [title, titleReset] = useField('text')
-  const [author, authorReset] = useField('text')
-  const [url, urlReset] = useField('text')
+const NewBlog = ({ createBlog }) => {
+    const [title, setTitle] = useState('')
+    const [author, setAuthor] = useState('')
+    const [url, setUrl] = useState('')
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    props.createBlog({
-      title: title.value,
-      author: author.value,
-      url: url.value
-    })
-    props.setNotification(`A new blog ${title.value} by ${author.value} added`,5000)
-    titleReset()
-    authorReset()
-    urlReset()
-  }
+    const handleNewBlog = (event) => {
+        event.preventDefault()
 
-  return (
-    <div>
-      <h2>create new</h2>
+        createBlog({ 
+            title, 
+            author, 
+            url })
 
-      <form onSubmit={handleSubmit}>
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+    }
+
+    return (
         <div>
-          title:
-          <input {...title} />
+            <h2>Create New</h2>
+            <Form onSubmit={handleNewBlog}>
+                <Form.Group>
+                    <Form.Label>Author:</Form.Label>
+                    <Form.Control
+                        id='author'
+                        value={author}
+                        onChange={({ target }) => setAuthor(target.value)}
+                    />
+                    <Form.Label>Title:</Form.Label>
+                    <Form.Control
+                        id='title'
+                        value={title}
+                        onChange={({ target }) => setTitle(target.value)}
+                    />
+                    <Form.Label>URL:</Form.Label>
+                    <Form.Control
+                        id='url'
+                        value={url}
+                        onChange={({ target }) => setUrl(target.value)}
+                    />
+                    <Button variant="primary" id="create">Create</Button>
+                </Form.Group>
+            </Form>
         </div>
-        <div>
-          author:
-          <input {...author} />
-        </div>
-        <div>
-          url:
-          <input {...url} />
-        </div>
-        <button type='submit'>create</button>
-      </form>
-    </div>
-  )
+    )
 }
 
-export default connect(null, {setNotification, createBlog})(NewBlog)
+export default NewBlog

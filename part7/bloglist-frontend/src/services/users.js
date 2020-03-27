@@ -1,14 +1,10 @@
-import axios from 'axios'
-const baseUrl = 'api/users'
+import axios from "axios";
 
-const getAll = async () => {
-    const response = await axios.get(baseUrl)
-    return response.data
-}
+const baseUrl = "/api/users";
 
-const findById = async (id) => {
-    const response = await axios.get(`${baseUrl}/${id}`)
-    return response.data
-}
+const getAll = () => {
+  const request = axios.get(baseUrl);
+  return request.then(response => response.data);
+};
 
-export default { getAll, findById }
+export default { getAll };
