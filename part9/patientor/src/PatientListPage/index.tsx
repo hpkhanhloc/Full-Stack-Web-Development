@@ -3,7 +3,7 @@ import axios from "axios";
 import { Container, Table, Button } from "semantic-ui-react";
 
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
-import AddPatientModal from "../AddPatientModal";
+import {AddPatientModal} from "../AddPatientModal";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";

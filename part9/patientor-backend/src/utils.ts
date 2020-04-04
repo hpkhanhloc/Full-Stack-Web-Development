@@ -15,9 +15,9 @@ const parseText = (text: any): string => {
 };
 
 const parseEntry = (entry: Array<any>): Entry[] => {
-  //if (entry.length === 0) {
-  //  return entry;
-  //} else {
+  if (!entry) {
+   return [];
+  } else {
     entry.map(e => {
       if (!e.type || !isString(e.type)) {
         throw new Error(`Incorrect or missing ${e.text}: ${e.text}`);
@@ -28,7 +28,18 @@ const parseEntry = (entry: Array<any>): Entry[] => {
     });
     return entry;
   //}
+}
 };
+
+// const isEntry = (entry: any): Entry => {
+//   if (!entry.type || !isString(entry.type)) {
+//     throw new Error(`Incorrect or missing ${entry.text}: ${entry.text}`);
+//   }
+//   if (!['HealthCheck', 'OccupationalHealthcare', 'Hospital'].includes(entry.type)) {
+//     throw new Error(`Incorrect of type ${entry.type}: ${entry.type}`);
+//   }
+//   return entry;
+// };
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -53,7 +64,7 @@ const parseGender = (gender: any): Gender => {
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const toNewPatientEntry = (object: any): NewPatientEntry => {
+export const toNewPatientEntry = (object: any): NewPatientEntry => {
   const newEntry: NewPatientEntry = {
     name: parseText(object.name),
     dateOfBirth: parseDate(object.dateOfBirth),
@@ -66,17 +77,13 @@ const toNewPatientEntry = (object: any): NewPatientEntry => {
   return newEntry;
 };
 
-const toNewEntry = (object: any): Entry => {
-  const newEntry: NewPatientEntry = {
-    name: parseText(object.name),
-    dateOfBirth: parseDate(object.dateOfBirth),
-    ssn: parseText(object.ssn),
-    gender: parseGender(object.gender),
-    occupation: parseText(object.occupation),
-    entries: parseEntry(object.entries)
-  };
+// export const toNewEntry = (object: any): NewEntry => {
+//   const newEntry: NewEntry = {
+//     type: partType(object.type),
+//     specialist: parseText(object.specialist),
+//     description: parseText(object.description),
+//     diagnosisCodes: parseText(object.diagnosisCodes),
+//   };
 
-  return newEntry;
-};
-
-export default toNewPatientEntry;
+//   return newEntry;
+// };

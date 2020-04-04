@@ -38,6 +38,13 @@ export const addPatient = (newPatient: Patient): Action => {
   };
 };
 
+// export const addEntry = (newEntry: Patient): Action => {
+//   return {
+//     type: "ADD_ENTRY",
+//     payload: newEntry
+//   };
+// };
+
 export const getPatient = (patientFromApi: Patient): Action => {
   return {
     type: "GET_PATIENT",
@@ -77,6 +84,14 @@ export const reducer = (state: State, action: Action): State => {
           [action.payload.id]: action.payload
         }
       };
+    // case "ADD_ENTRY":
+    //   return {
+    //     ...state,
+    //     patients: {
+    //       ...state.patients,
+    //       [action.payload.id]: action.payload
+    //     }
+    //   };
     case "GET_PATIENT":
       return {
         ...state,

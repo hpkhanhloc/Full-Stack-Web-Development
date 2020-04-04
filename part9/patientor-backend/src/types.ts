@@ -11,6 +11,7 @@ export enum Gender {
 
 export type NonSensitivePatientEntry = Omit<Patients, "ssn">;
 export type NewPatientEntry = Omit<Patients, "id">;
+export type NewEntry = Omit<Entry, 'id'>;
 
 export interface Patients {
   id: string;
@@ -55,6 +56,7 @@ interface HospitalEntry extends BaseEntry {
 
 interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare"; 
+  employerName: string;
   sickLeave?: {
     startDate: string;
     endDate: string;
